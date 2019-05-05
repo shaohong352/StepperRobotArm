@@ -9,7 +9,7 @@ A class for the use of mechanical switches connected to the Raspberry Pi.
 Switches need to be pulled down (via external pull down resistor or
 by using the pull down functionality of the microcontroller). 
 This class provides:
-- software debounce (no chattering)
+- software debounce
 - execution of different functions on ON / OFF
 """
 # - - - - - - - - - - - - - - - - 

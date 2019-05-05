@@ -35,7 +35,7 @@ replicaArm = ReplicaRobotArm()
 replayButton = Button(20, stepperArm.shortPressAction, lambda: True)
 deleteButton = Button(16, stepperArm.deleteReplayList, lambda: True)
 
-notUsedSwitch = Switch(6, lambda: True, lambda: True)
+motorHoldSwitch = Switch(6, lambda: stepperArm.setMotorHold('hold'), lambda: stepperArm.setMotorHold('release'))
 endlessRepeatSwitch = Switch(13, lambda: stepperArm.setEndlessReplay(True), lambda: stepperArm.setEndlessReplay(False))
 setOriginSwitch = Switch(19, replicaArm.getCorrValues, lambda: True)
 followSwitch = Switch(26, lambda: stepperArm.setMode('follow'), lambda: stepperArm.setMode('idle'))
@@ -47,7 +47,7 @@ repeatSwitch = Switch(12, lambda: stepperArm.setMode('replay'), lambda: stepperA
 def updateInputDevices():
     replayButton.update()
     deleteButton.update()
-    notUsedSwitch.update()
+    motorHoldSwitch.update()
     endlessRepeatSwitch.update()
     setOriginSwitch.update()
     followSwitch.update()

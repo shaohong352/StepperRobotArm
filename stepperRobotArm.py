@@ -50,10 +50,13 @@ class StepperRobotArm:
     def setMode(self, mode):
         if mode is 'follow':
             self.mode = 'follow'
+            print("Follow mode enabled.")
         elif mode is 'replay':
             self.mode = 'replay'
+            print("Replay mode enabled.")
         elif mode is 'idle':
             self.mode = 'idle'
+            print("Arm is idle.")
         else:
             raise NameError('unknown mode.')
 
@@ -92,10 +95,11 @@ class StepperRobotArm:
         if self.mode is 'follow':
             self.saveCurrentPos()
         else:
+            print("Preparing Replay.")
             self.prepareReplay()
 
     def saveCurrentPos(self):
-        print("saving current pos")
+        print("Saving current position.")
         self.replayList.append(('arm', dict(self.currentPosDict)))
         self.replayList.append(('gripper', self.servoGripper.currentPos))
         self.blinkLED.setMode('fastBlinkTwice')
@@ -105,18 +109,34 @@ class StepperRobotArm:
         self.replayStepList = list(self.replayList)
 
     def deleteReplayList(self):
-        print("Deleting replayList.")
+        print("Deleting replay List.")
         self.replayList = []
 
     def setEndlessReplay(self, value):
-        print('endless replay:', value)
+        print('Endless replay:', value)
         self.endlessReplay = value 
 
     def replayEnded(self):
         if self.endlessReplay:
             self.prepareReplay()
+        else:
+            print("Replay has completed.")
 
     def useCurrentPosAsOrigin(self):
         self.port.write(b"G10 P0 L20 X0 Y0 Z0")
         self.port.write(b"\n")
         self.waitForResponse()
+        
+    def setMotorHold(self, mode):
+        if mode is 'hold':
+            print("Motors are holding themselves in place.")
+            self.port.write(b"$1 = 255")
+            self.port.write(b"\n")
+            self.waitForResponse()
+        elif mode is 'release':
+            print("Motors have released their hold.")
+            self.port.write(b"$1 = 0")
+            self.port.write(b"\n")
+            self.waitForResponse()
+        else:
+            raise NameError('unknown mode.')

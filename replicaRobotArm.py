@@ -16,6 +16,7 @@ class ReplicaRobotArm:
         self.corrDict = {"X": 0, "Y": 0, "Z": 0}
         self.getCorrValues()
         self.k = 0.002
+        self.k_z = 0.003
 
     def update(self):
         self.updatePosDict()
@@ -25,6 +26,7 @@ class ReplicaRobotArm:
        # self.printPosDict()
 
     def getCorrValues(self):
+        print("Returning to the origin position.")
         self.corrDict["X"] = self.mcp.read_adc(1)
         self.corrDict["Y"] = self.mcp.read_adc(2)
         self.corrDict["Z"] = self.mcp.read_adc(3)
@@ -43,18 +45,19 @@ class ReplicaRobotArm:
 
     def multiplyPosDict(self):
         for key, value in self.posDict.items():
-            self.posDict[key] = value * self.k 
+            if key == "Z":
+                self.posDict[key] = value * self.k_z
+            else:
+                self.posDict[key] = value * self.k
 
     def printPosDict(self):
         for key, value in self.posDict.items():
             print(key, value)
 
 # - - - - - - - - - - - - - - - - 
-# - - - - - -  MEMO - - - - - - -
+# 0 1 2 3
+# s X Y Z
+# X -> Lefthand rotation (Grey gear)
+# Y -> Righthand rotation (Black gear)
+# Z -> Base rotation
 # - - - - - - - - - - - - - - - -
-# 0 1 2 3 4
-#   X Y Z A
-# A -> bottom rotation [removed]
-# X -> bottom first
-# Y -> bottom second
-# Z -> top
