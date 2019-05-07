@@ -119,14 +119,12 @@ class StepperRobotArm:
     def replayEnded(self):
         if self.endlessReplay:
             self.prepareReplay()
-        else:
-            print("Replay has completed.")
 
     def useCurrentPosAsOrigin(self):
         self.port.write(b"G10 P0 L20 X0 Y0 Z0")
         self.port.write(b"\n")
         self.waitForResponse()
-        
+
     def setMotorHold(self, mode):
         if mode is 'hold':
             print("Motors are holding themselves in place.")
