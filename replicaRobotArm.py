@@ -26,7 +26,7 @@ class ReplicaRobotArm:
        # self.printPosDict()
 
     def getCorrValues(self):
-        print("Returning to the origin position.")
+        print("****        Returning to the origin position. \n")
         self.corrDict["X"] = self.mcp.read_adc(1)
         self.corrDict["Y"] = self.mcp.read_adc(2)
         self.corrDict["Z"] = self.mcp.read_adc(3)

@@ -28,7 +28,7 @@ class StepperRobotArm:
 
     def wakeUpGrbl(self):
         self.port.write(b"\r\n\r\n")
-        print("waking up grbl")
+        print("****        Waking up GRBL. \n")
         time.sleep(2)
         self.port.flushInput()
 
@@ -50,26 +50,26 @@ class StepperRobotArm:
     def setMode(self, mode):
         if mode is 'follow':
             self.mode = 'follow'
-            print("Follow mode enabled.")
+            print("****        Follow mode enabled. \n")
         elif mode is 'replay':
             self.mode = 'replay'
-            print("Replay mode enabled.")
+            print("****        Replay mode enabled. \n")
         elif mode is 'idle':
             self.mode = 'idle'
-            print("Arm is idle.")
+            print("****        Arm is idle. \n")
         else:
             raise NameError('unknown mode.')
 
     def moveToPosition(self, targetPosDict):
         self.sendTargetPositions(
-            -targetPosDict["X"], 
-            targetPosDict["Y"], 
+            -targetPosDict["X"],
+            targetPosDict["Y"],
             -targetPosDict["Z"])
 
     def moveToPositionRaw(self, targetPosDict):
         self.sendTargetPositions(
-            targetPosDict["X"], 
-            targetPosDict["Y"], 
+            targetPosDict["X"],
+            targetPosDict["Y"],
             targetPosDict["Z"])
 
     def moveGripperToPosition(self, pos):
@@ -95,11 +95,11 @@ class StepperRobotArm:
         if self.mode is 'follow':
             self.saveCurrentPos()
         else:
-            print("Preparing Replay.")
+            print("****        Beginning single replay. \n")
             self.prepareReplay()
 
     def saveCurrentPos(self):
-        print("Saving current position.")
+        print("****        Saving current position. \n")
         self.replayList.append(('arm', dict(self.currentPosDict)))
         self.replayList.append(('gripper', self.servoGripper.currentPos))
         self.blinkLED.setMode('fastBlinkTwice')
@@ -109,16 +109,21 @@ class StepperRobotArm:
         self.replayStepList = list(self.replayList)
 
     def deleteReplayList(self):
-        print("Deleting replay List.")
+        print("****        Deleting replay List. \n")
         self.replayList = []
 
     def setEndlessReplay(self, value):
-        print('Endless replay:', value)
-        self.endlessReplay = value 
+        print('****        Endless replay:', value ,'\n')
+        self.endlessReplay = value
 
+    counter = 0
     def replayEnded(self):
         if self.endlessReplay:
             self.prepareReplay()
+            self.counter += 1
+            print('****                                    Replay number:', self.counter ,'\n')
+        else:
+            self.counter = 0
 
     def useCurrentPosAsOrigin(self):
         self.port.write(b"G10 P0 L20 X0 Y0 Z0")
@@ -127,14 +132,15 @@ class StepperRobotArm:
 
     def setMotorHold(self, mode):
         if mode is 'hold':
-            print("Motors are holding themselves in place.")
+            print("****        Motors will hold themselves in place. \n")
             self.port.write(b"$1 = 255")
             self.port.write(b"\n")
             self.waitForResponse()
         elif mode is 'release':
-            print("Motors have released their hold.")
+            print("****        Motors will release their hold. \n")
             self.port.write(b"$1 = 0")
             self.port.write(b"\n")
             self.waitForResponse()
         else:
             raise NameError('unknown mode.')
+

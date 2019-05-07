@@ -46,9 +46,9 @@ class Switch:
         return int(time.time()*1000)
 
     def switchOn(self):
-        print("pin {0} ON".format(self.pin))
+        print("Pin {0} ON".format(self.pin))
         self.switchOnFun()
 
     def switchOff(self):
-        print("pin {0} OFF".format(self.pin))
+        print("Pin {0} OFF".format(self.pin))
         self.switchOffFun()

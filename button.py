@@ -60,9 +60,9 @@ class Button:
         return int(time.time()*1000)
 
     def longPress(self):
-        print("pin {0} long press".format(self.pin))
+        print("Pin {0} long press".format(self.pin))
         self.longPressFun()
 
     def shortPress(self):
-        print("pin {0} short press".format(self.pin))
+        print("Pin {0} short press".format(self.pin))
         self.shortPressFun()
